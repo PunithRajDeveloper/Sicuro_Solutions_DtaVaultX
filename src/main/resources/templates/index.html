@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration and Login App</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+</head>
+
+<body>
+
+	 <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center">Image Gallery</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Image</th>
+                            <th>Size</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="im : ${list}">
+                            <td>
+                                <input type="checkbox" class="image-checkbox" data-id="${im.id}">
+                            </td>
+                            <td>
+                                <img th:src="'ImageFiles/' + ${im.imagename}" alt="Image" class="img-thumbnail">
+                            </td>
+                            <td th:text="${#numbers.formatDecimal(im.size, 0, 'COMMA', 2, 'POINT')} + ' KB'"></td>
+                            <td>
+                                <!-- Add update and delete buttons with appropriate URLs -->
+                                <a th:href="@{'/update/' + ${im.id}}" class="btn btn-primary btn-sm btn-update" disabled>Update</a>
+                                <a th:href="@{'/delete/' + ${im.id}}" class="btn btn-danger btn-sm btn-delete" disabled>Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
+					Login Module</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<!-- create navigation bar (header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
+                Login Module</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Login</a></li>
+                <li sec:authorize="isAnonymous()"><a th:href="@{/registration}">Register</a></li>
+                <!-- Add more menu items if needed -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+
+	<br>
+	<br> Welcome
+	<span sec:authentication="principal.username"> User</span>
+	
+	 <script>
+        $(document).ready(function () {
+            // When a checkbox is checked, enable the corresponding update and delete buttons
+            $('.image-checkbox').on('change', function () {
+                var isChecked = $(this).prop('checked');
+                var id = $(this).data('id');
+                var updateButton = $('.btn-update[data-id="' + id + '"]');
+                var deleteButton = $('.btn-delete[data-id="' + id + '"]');
+                updateButton.prop('disabled', !isChecked);
+                deleteButton.prop('disabled', !isChecked);
+            });
+        });
+    </script>
+	
+	
+	<!-- Bootstrap JavaScript and jQuery (Add these scripts at the end of the body tag for faster page load) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-B4gt1pYs1bsRB/3uHA7J1BvMq7xkDe7pMDrV3HJG1SvN7hd+qUuysaSF1VfclBM"
+        crossorigin="anonymous"></script>
+	
+</body>
+</html>
