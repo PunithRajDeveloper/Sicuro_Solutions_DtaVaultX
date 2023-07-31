@@ -174,8 +174,6 @@ public class MainController {
 		FileUpload fileToUpdate = fileUploadRepo.findById(fileId).orElse(null);
 
 		if (fileToUpdate == null) {
-			// File not found in the database
-			// Handle this case accordingly (e.g., show an error message or redirect to an error page)
 			return "redirect:/";
 		}
 
